@@ -3,14 +3,16 @@
 
 > **Purpose:** This document is the single source of truth for the HireFlow AI capstone. At the start of each future session, use this plan and the progress recorded here to identify the current task. Update this document whenever a task, decision, requirement, or project structure changes. Do not silently change locked decisions.
 
-## Latest Progress Update — 2026-11-08
+## Latest Progress Update — 2026-11-15
 
-- **D01.8d is completed.** Reviewed the current FastAPI lifespan, SQLAlchemy async engine/session setup, and Pydantic Settings configuration.
-- **Runtime verification passed:** `uv run uvicorn hireflow.main:app --reload` started successfully; `/` and `/health` returned HTTP 200; Ctrl+C completed application shutdown and engine disposal.
-- **Environment-file check passed:** `git check-ignore .env` returned `.env`, and `.env` was absent from the reported `git status --short` output.
-- **Backend Git repository is initialized but not yet committed:** the reported untracked items were `.gitignore`, `.python-version`, `README.md`, `pyproject.toml`, `src/`, and `uv.lock`.
-- **Next task:** D01.9a. First inspect the project root and repository layout before initializing the Next.js frontend or changing Git structure.
+- **D01.9a–D01.9f are completed.** The Next.js App Router frontend, Tailwind design tokens, shared layout/navigation, dashboard shell, reusable UI components, typed API client foundation, and representative feedback states are implemented.
+- **Frontend verification passed:** `npm run lint` and `npm run build` both succeeded; the production build includes `/` and `/dashboard` routes. Desktop/mobile layouts and keyboard navigation were reviewed.
+- **Backend integration verification passed:** `uv run uvicorn hireflow.main:app --reload` started successfully; `GET /` and `GET /health` both returned HTTP 200.
+- **Environment and generated-file checks passed:** backend `.env` and frontend `.env.local` are ignored; `node_modules`, `.next`, and `.venv` are ignored.
+- **D01.10 is completed.** The root repository is clean after the frontend baseline commit `d951299` (`feat(frontend): add initial HireFlow dashboard foundation`). The commit contains 28 frontend files; staged whitespace checks passed.
+- **Repository consolidation:** the root `hireflow-ai/` directory is the Git repository; the nested `backend/.git` was removed so backend and frontend share the root repository.
 - **Pending cleanup:** `check_db.py` currently lives at `backend/src/scripts/check_db.py`; the intended location is `backend/scripts/check_db.py`.
+- **Next task:** D02.1 — understand automation architecture and event-driven workflows.
 
 
 ## 1. Project Overview
@@ -199,7 +201,7 @@ Status labels: **Completed**, **In Progress**, **Not Started**. Update individua
 
 ### Day 1 — Architecture & Foundations
 
-**Status: In Progress**
+**Status: Completed**
 
 - [x] D01.1 — Understand HireFlow workflow and high-level architecture. **Completed**
 - [x] D01.2 — Define frontend/backend responsibilities. **Completed**
@@ -212,13 +214,13 @@ Status labels: **Completed**, **In Progress**, **Not Started**. Update individua
 - [x] D01.8b — Configure local environment loading and install SQLAlchemy, asyncpg, and python-dotenv. **Completed**
 - [x] D01.8c — Verify the real Supabase PostgreSQL connection using `src/scripts/check_db.py`. **Completed** — real async PostgreSQL connection succeeded; query returned `1`.
 - [x] D01.8d — Review database connection lifecycle and secure configuration. **Completed** — reviewed `main.py`, `db.py`, and `config.py`; confirmed FastAPI lifespan disposes the shared async engine on shutdown, request-scoped sessions close through `async with`, transaction commits remain explicit in service/business logic, and `.env` is ignored by Git. Uvicorn startup, `/`, `/health`, and graceful shutdown were verified.
-- [ ] D01.9a — Initialize the Next.js App Router project with React and TypeScript. **Next task; first inspect the project-root repository/layout before creating or moving files.**
-- [ ] D01.9b — Configure Tailwind CSS and establish initial design tokens (typography, spacing, colors, breakpoints).
-- [ ] D01.9c — Create the frontend folder structure, root layout, shared navigation, and responsive application shell.
-- [ ] D01.9d — Build the first dashboard shell with reusable cards, buttons, form controls, tables, badges, and feedback components.
-- [ ] D01.9e — Create a typed API client foundation for communicating with FastAPI; configure environment variables safely.
-- [ ] D01.9f — Add representative loading, empty, error, and success states; verify keyboard access and responsive behavior.
-- [ ] D01.10 — Integrate and review the Day 1 backend/frontend foundations; document decisions and commit the working baseline.
+- [x] D01.9a — Initialize the Next.js App Router project with React and TypeScript. **Completed.**
+- [x] D01.9b — Configure Tailwind CSS and establish initial design tokens (typography, spacing, colors, breakpoints). **Completed.**
+- [x] D01.9c — Create the frontend folder structure, root layout, shared navigation, and responsive application shell. **Completed.**
+- [x] D01.9d — Build the first dashboard shell with reusable cards, buttons, form controls, tables, badges, and feedback components. **Completed.**
+- [x] D01.9e — Create a typed API client foundation for communicating with FastAPI; configure environment variables safely. **Completed.**
+- [x] D01.9f — Add representative loading, empty, error, and success states; verify keyboard access and responsive behavior. **Completed.**
+- [x] D01.10 — Integrate and review the Day 1 backend/frontend foundations; document decisions and commit the working baseline. **Completed.**
 
 ### Day 2 — Automation & Integrations
 
@@ -306,7 +308,7 @@ Status labels: **Completed**, **In Progress**, **Not Started**. Update individua
 
 | Area | Status | Notes |
 |---|---|---|
-| Day 1 — Architecture & Foundations | **In Progress** | Architecture, backend foundation, Supabase connectivity, database lifecycle review, and secure `.env` ignore verification are complete. Next: inspect the project-root repository/layout, then begin the Next.js foundation. |
+| Day 1 — Architecture & Foundations | **Completed** | Backend and frontend foundations integrated and verified; lint/build and API smoke checks passed; frontend baseline committed as `d951299`. |
 | Day 2 — Automation & Integrations | **Not Started** | Do not begin until Day 1 is reviewed and completed. |
 | Day 3 — LLM Engineering | **Not Started** | Use Groq Free within limits and retain mock fallback. |
 | Day 4 — AI Agents & Orchestration | **Not Started** | Use bounded workflows and human approval. |
@@ -324,17 +326,13 @@ Status labels: **Completed**, **In Progress**, **Not Started**. Update individua
 - A Supabase project named `hireflow-ai-dev` was created in the Singapore region.
 - SQLAlchemy, asyncpg, greenlet, python-dotenv, and Pydantic Settings are installed.
 - `.env` is ignored by Git, and the settings loader successfully reads `DATABASE_URL` without printing its value.
+- The Next.js frontend foundation is implemented with reusable UI components, responsive navigation/dashboard, Tailwind design tokens, and a typed API client.
+- Frontend lint and production build passed; backend root and health endpoints returned HTTP 200 during integration verification.
+- The frontend baseline was committed on `main` as `d951299`; the root working tree was confirmed clean.
 
 ### 4.3 Immediate next step
 
-**Begin D01.9a only after inspecting the existing repository and project-root layout.** From `~/projects/hireflow-ai` (not `backend/`), run:
-
-```bash
-pwd
-ls -la
-```
-
-The user should share both command outputs. Use them to decide how to organize the frontend and backend together without disturbing the existing Git repository inside `backend/`. Do not move or delete Git metadata before inspecting the actual repository state. D01.8d is complete; the only noted cleanup items are the optional import-order cleanup in `main.py` and deciding whether to relocate `src/scripts/check_db.py` to `backend/scripts/check_db.py`.
+**Begin D02.1 — Understand automation architecture and event-driven workflows.** Day 1 foundations are complete. Continue incrementally: explain the concept, give one focused practical exercise, review the result, and then proceed. Keep all development within the free-tools constraint. The known small cleanup item is relocating `backend/src/scripts/check_db.py` to `backend/scripts/check_db.py`; do not let this distract from the next planned task unless it becomes necessary.
 
 ### 4.4 Session handoff rules
 
