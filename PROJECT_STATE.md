@@ -3,7 +3,7 @@
 
 > **Purpose:** This document is the single source of truth for the HireFlow AI capstone. At the start of each future session, use this plan and the progress recorded here to identify the current task. Update this document whenever a task, decision, requirement, or project structure changes. Do not silently change locked decisions.
 
-## Latest Progress Update — 2026-11-15
+## Latest Progress Update — 2026-11-16
 
 - **D01.9a–D01.9f are completed.** The Next.js App Router frontend, Tailwind design tokens, shared layout/navigation, dashboard shell, reusable UI components, typed API client foundation, and representative feedback states are implemented.
 - **Frontend verification passed:** `npm run lint` and `npm run build` both succeeded; the production build includes `/` and `/dashboard` routes. Desktop/mobile layouts and keyboard navigation were reviewed.
@@ -12,7 +12,8 @@
 - **D01.10 is completed.** The root repository is clean after the frontend baseline commit `d951299` (`feat(frontend): add initial HireFlow dashboard foundation`). The commit contains 28 frontend files; staged whitespace checks passed.
 - **Repository consolidation:** the root `hireflow-ai/` directory is the Git repository; the nested `backend/.git` was removed so backend and frontend share the root repository.
 - **Pending cleanup:** `check_db.py` currently lives at `backend/src/scripts/check_db.py`; the intended location is `backend/scripts/check_db.py`.
-- **Next task:** D02.1 — understand automation architecture and event-driven workflows.
+- **D02.1 is completed.** Reviewed event-driven CV processing, asynchronous jobs and HTTP 202 responses, failure-state handling, retries/fallbacks, and idempotency. The user correctly identified `cv.uploaded`, explained why long-running work should not block HTTP requests, and learned to prevent duplicate processing using request-level IDs plus a SHA-256 content fingerprint scoped to an organization, enforced by a database uniqueness constraint.
+- **Next task:** D02.2 — learn and implement webhooks.
 
 
 ## 1. Project Overview
@@ -224,9 +225,10 @@ Status labels: **Completed**, **In Progress**, **Not Started**. Update individua
 
 ### Day 2 — Automation & Integrations
 
-**Status: Not Started**
+**Status: In Progress**
 
-- [ ] D02.1 — Understand automation architecture and event-driven workflows.
+- [x] D02.1 — Understand automation architecture and event-driven workflows. **Completed** — covered events, asynchronous processing, failure handling, and idempotency using upload IDs and content fingerprints.
+
 - [ ] D02.2 — Learn and implement webhooks.
 - [ ] D02.3 — Integrate external APIs and handle errors, retries, and timeouts.
 - [ ] D02.4 — Understand OAuth 2.0 and secure credential handling.
@@ -309,7 +311,7 @@ Status labels: **Completed**, **In Progress**, **Not Started**. Update individua
 | Area | Status | Notes |
 |---|---|---|
 | Day 1 — Architecture & Foundations | **Completed** | Backend and frontend foundations integrated and verified; lint/build and API smoke checks passed; frontend baseline committed as `d951299`. |
-| Day 2 — Automation & Integrations | **Not Started** | Do not begin until Day 1 is reviewed and completed. |
+| Day 2 — Automation & Integrations | **In Progress** | D02.1 completed; continue with webhooks. |
 | Day 3 — LLM Engineering | **Not Started** | Use Groq Free within limits and retain mock fallback. |
 | Day 4 — AI Agents & Orchestration | **Not Started** | Use bounded workflows and human approval. |
 | Day 5 — RAG & MCP | **Not Started** | Use Supabase PostgreSQL/pgvector where appropriate. |
@@ -332,7 +334,7 @@ Status labels: **Completed**, **In Progress**, **Not Started**. Update individua
 
 ### 4.3 Immediate next step
 
-**Begin D02.1 — Understand automation architecture and event-driven workflows.** Day 1 foundations are complete. Continue incrementally: explain the concept, give one focused practical exercise, review the result, and then proceed. Keep all development within the free-tools constraint. The known small cleanup item is relocating `backend/src/scripts/check_db.py` to `backend/scripts/check_db.py`; do not let this distract from the next planned task unless it becomes necessary.
+**Begin D02.2 — Learn and implement webhooks.** D02.1 is complete: the user understands event-driven CV processing, asynchronous jobs, failure handling, and duplicate prevention using idempotency keys and content fingerprints. Continue incrementally: explain the concept, give one focused practical exercise, review the result, and then proceed. Keep all development within the free-tools constraint. The known small cleanup item is relocating `backend/src/scripts/check_db.py` to `backend/scripts/check_db.py`; do not let this distract from the next planned task unless it becomes necessary.
 
 ### 4.4 Session handoff rules
 
